@@ -1,6 +1,7 @@
 from board import board_info  # 获取开发板信息
 from fpioa_manager import fm
 from maix import GPIO,I2S
+from maix import mic_array as mic
 import time, sensor, image, lcd, gc, math
 from machine import UART, SPI
 import struct
@@ -63,13 +64,13 @@ fm.register(1, fm.fpioa.UART1_TX)#10
 fm.register(0, fm.fpioa.UART1_RX)#8
 
 # 麦克风阵列引脚
-fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS#21
-fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK#22
-fm.register(44, fm.fpioa.I2S0_OUT_D0)    # MIC_D0#23
-fm.register(46, fm.fpioa.I2S0_OUT_D1)    # MIC_D1#24
-fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2#25
-fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3#26
-
+#fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS#21
+#fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK#22
+#fm.register(44, fm.fpioa.I2S0_OUT_D0)    # MIC_D0#23
+#fm.register(46, fm.fpioa.I2S0_OUT_D1)    # MIC_D1#24
+#fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2#25
+#fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3#26
+mic.init(i2s_d0=44, i2s_d1=46, i2s_d2=45, i2s_d3=47, i2s_ws=43, i2s_sclk=11, sk9822_dat=39,  sk9822_clk=40)
 # 按键
 fm.register(board_info.BOOT_KEY, fm.fpioa.GPIOHS0, force=True)
 #------------------------------------------
@@ -108,6 +109,41 @@ except:
 
 
 # 函数定义------------------------------------
+
+def get_direction_and_distance():
+    """获取声源方向和距离信息"""
+    try:
+        # 获取距离映射信息
+        distance_map = mic.get_map()
+        return distance_map
+
+    except Exception as e:
+        print("获取方向距离数据时出错:",str(e))
+        return None
+
+def calculate_distance_estimate(distance_map):
+        """
+        基于距离映射估算距离
+        distance_map包含各个方向的强度信息，用于估算距离
+        """
+        if distance_map is None:
+            return None
+
+        try:
+            # 计算平均强度
+            total_intensity = sum(distance_map)
+            avg_intensity = total_intensity / len(distance_map)
+
+            # 根据强度估算距离
+            if avg_intensity > 0:
+                estimated_distance = 1000 / avg_intensity
+                return min(estimated_distance, 500)  # 限制最大距离为500cm
+            else:
+                return None
+
+        except Exception as e:
+            print("计算距离估算时出错:",str(e))
+            return None
 
 def boot_key_irq(key):
     """按键中断处理"""
@@ -155,89 +191,7 @@ def reset_system():
     send_laser_control(False)
 
 
-def read_microphone_array():
-    """读取麦克风阵列数据"""
-    global audio_buffer
 
-    try:
-        # 读取I2S音频数据
-        audio_data = i2s_mic.record(mic_array_config['buffer_size'])
-        if audio_data:
-            # 将数据转换为6通道音频
-            samples = struct.unpack('<' + 'h' * (len(audio_data) // 2), audio_data)
-
-            # 按通道分离数据
-            channels = [[] for _ in range(6)]
-            for i in range(0, len(samples), 6):
-                for ch in range(6):
-                    if i + ch < len(samples):
-                        channels[ch].append(samples[i + ch])
-
-            return channels
-    except:
-        pass
-
-    return None
-
-def calculate_sound_source_location(audio_channels):
-    """计算声源位置"""
-    if not audio_channels or len(audio_channels) < 6:
-        return None, None
-
-    # 这里是声源定位算法的接口
-    # 实际实现需要使用TDOA（时差定位）或波束形成等算法
-
-    # 简化的定位算法示例
-    try:
-        # 计算各通道间的时间差
-        time_delays = calculate_time_delays(audio_channels)
-
-        # 根据时间差计算位置
-        distance, angle = tdoa_localization(time_delays)
-
-        return distance, angle
-    except:
-        return None, None
-
-def calculate_time_delays(channels):
-    """计算各通道间的时间差"""
-    # 互相关算法
-    time_delays = []
-
-    for i in range(1, len(channels)):
-        # 计算第i个通道相对于第0个通道的时间差
-        delay = cross_correlation_delay(channels[0], channels[i])
-        time_delays.append(delay)
-
-    return time_delays
-
-def cross_correlation_delay(sig1, sig2):
-    """计算两个信号的互相关时间差"""
-    # 返回随机时间差(接口函数,需要完善)
-    # 实际需要实现完整的互相关算法
-    return 0.001 * (hash(str(sig1[:10])) % 100 - 50)
-
-def tdoa_localization(time_delays):
-    """基于时间差的定位算法"""
-    # TDOA定位算法
-    # 实际需要解非线性方程组
-
-    if not time_delays:
-        return 0, 0
-
-    # 简化计算
-    avg_delay = sum(time_delays) / len(time_delays)
-    distance = abs(avg_delay) * localization_params['sound_speed'] * 100  # 转换为cm
-
-    # 限制距离范围
-    distance = max(localization_params['min_distance'] * 100,
-                  min(distance, localization_params['max_distance'] * 100))
-
-    # 计算角度
-    angle = math.atan2(time_delays[0], time_delays[1] if len(time_delays) > 1 else 0.001)
-    angle = math.degrees(angle)
-
-    return distance, angle
 
 def send_uart_data(distance, angle, laser_on=False):
     """发送数据到STM32"""
@@ -363,11 +317,12 @@ def main_loop():
         if system_state['locating'] or system_state['tracking']:
             if current_time - last_location_time > localization_params['update_interval'] * 1000:
                 # 读取麦克风阵列数据
-                audio_channels = read_microphone_array()
+                direction_map=get_direction_and_distance()
 
-                if audio_channels:
+                if direction_map:
                     # 计算声源位置
-                    distance, angle = calculate_sound_source_location(audio_channels)
+                    angle=mic.get_dir(direction_map)
+                    distance= calculate_distance_estimate(direction_map)
                     if distance is not None and angle is not None:
                         system_state['distance'] = distance
                         system_state['angle'] = angle
@@ -379,11 +334,8 @@ def main_loop():
                         if system_state['tracking']:
                             system_state['laser_on'] = True
                             send_laser_control(True)
-
                         print("距离: " + str(round(distance, 2)) + "cm, 角度: " + str(round(angle, 1)) + "°")
-
                 last_location_time = current_time
-
         # 检查串口接收
         if uart1.any():
             try:
@@ -398,12 +350,10 @@ def main_loop():
 
 # 中断初始化
 boot_key.irq(boot_key_irq, GPIO.IRQ_BOTH, GPIO.WAKEUP_NOT_SUPPORT, 7)
-
 # 启动主程序
 if __name__ == "__main__":
     try:
         main_loop()
-    except KeyboardInterrupt:
-        print("程序停止")
+        mic.deinit()
     except Exception as e:
         print("程序错误: " + str(e))
