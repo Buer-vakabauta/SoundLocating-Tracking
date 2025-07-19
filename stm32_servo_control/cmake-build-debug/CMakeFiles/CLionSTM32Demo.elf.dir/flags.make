@@ -5,13 +5,13 @@
 # compile C with D:/13.3 rel1/bin/arm-none-eabi-gcc.exe
 ASM_DEFINES = -DSTM32F103xB -DSTM32F10X_HD -DUSE_HAL_DRIVER -DUSE_STDPERIPH_DRIVER
 
-ASM_INCLUDES = -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\User" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\STM32F10x_FWLib\inc" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\Hardware"
+ASM_INCLUDES = -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\User" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\STM32F10x_FWLib\inc" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\Hardware"
 
 ASM_FLAGS = -g -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g
 
 C_DEFINES = -DSTM32F103xB -DSTM32F10X_HD -DUSE_HAL_DRIVER -DUSE_STDPERIPH_DRIVER
 
-C_INCLUDES = -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\User" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\STM32F10x_FWLib\inc" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\Hardware"
+C_INCLUDES = -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\User" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\STM32F10x_FWLib\inc" -I"C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\Hardware"
 
 C_FLAGS = -g -std=gnu11 -fdiagnostics-color=always -mcpu=cortex-m3 -mthumb -mthumb-interwork -ffunction-sections -fdata-sections -fno-common -fmessage-length=0 -Og -g
 

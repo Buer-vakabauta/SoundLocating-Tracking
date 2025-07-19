@@ -36,3 +36,4 @@
 .\objects\main.o: .\Hardware\Delay.h
 .\objects\main.o: .\Hardware\Timer.h
 .\objects\main.o: .\Hardware\PWM.h
+.\objects\main.o: .\Hardware\Laser.h

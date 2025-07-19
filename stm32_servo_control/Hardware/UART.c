@@ -4,12 +4,11 @@
 #include "UART.h"
 //#include "cstring"
 #include "string.h"
-
-#define BUFFER_SIZE 100
+#include "json.h"
+#define BUFFER_SIZE 256
 
 char uart_buffer[BUFFER_SIZE];
-uint8_t buffer_index = 0;
-
+uint8_t buffer_index = -1;
 
 void UART_Init(uint32_t baud_rate) {
     // 1. 启用 GPIOA 和 USART1 的时钟
@@ -103,8 +102,10 @@ void USART1_IRQHandler(void) {
         // 检查是否为终止符（例如换行符）
         if (received_char == '\n' || received_char == '\r') {
             uart_buffer[buffer_index] = '\0'; // 字符串结束符
-            buffer_index = 0; // 重置索引准备接收下一条数据
-            // 在这里处理 uart_buffer 中的数据
+            buffer_index = 0;
+            if(uart_buffer[0]=='{'){
+                parse_json_manual(uart_buffer);
+            }
         } else if (buffer_index < BUFFER_SIZE - 1) {
             uart_buffer[buffer_index++] = received_char; // 存入缓冲区
         }

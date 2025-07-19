@@ -731,16 +731,6 @@
               <FilePath>.\Hardware\UART.c</FilePath>
             </File>
             <File>
-              <FileName>Beep_Led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Hardware\Beep_Led.c</FilePath>
-            </File>
-            <File>
-              <FileName>Beep_Led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Hardware\Beep_Led.h</FilePath>
-            </File>
-            <File>
               <FileName>Key.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Hardware\Key.c</FilePath>
@@ -749,6 +739,26 @@
               <FileName>Key.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Hardware\Key.h</FilePath>
+            </File>
+            <File>
+              <FileName>json.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\json.c</FilePath>
+            </File>
+            <File>
+              <FileName>json.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\json.h</FilePath>
+            </File>
+            <File>
+              <FileName>Laser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Laser.c</FilePath>
+            </File>
+            <File>
+              <FileName>Laser.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Laser.h</FilePath>
             </File>
           </Files>
         </Group>

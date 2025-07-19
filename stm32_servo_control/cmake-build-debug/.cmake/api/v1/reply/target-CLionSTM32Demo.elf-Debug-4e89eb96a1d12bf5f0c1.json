@@ -29,19 +29,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 78,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 72,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 73,
+				"line" : 80,
 				"parent" : 0
 			},
 			{
@@ -53,13 +41,25 @@
 			{
 				"command" : 1,
 				"file" : 0,
+				"line" : 75,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
 				"line" : 76,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 78,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 91,
+				"line" : 93,
 				"parent" : 0
 			},
 			{
@@ -162,15 +162,15 @@
 			[
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/User"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/User"
 				},
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/STM32F10x_FWLib/inc"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/STM32F10x_FWLib/inc"
 				},
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/Hardware"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/Hardware"
 				}
 			],
 			"language" : "C",
@@ -188,18 +188,25 @@
 				2,
 				4,
 				6,
-				8,
-				10,
+				9,
 				12,
-				15,
-				17,
-				19,
-				22,
-				25,
-				27,
-				29,
-				31,
-				33,
+				14,
+				16,
+				18,
+				20,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				58,
+				59,
+				60,
+				61,
 				62,
 				63,
 				64,
@@ -213,20 +220,7 @@
 				72,
 				73,
 				74,
-				75,
-				76,
-				77,
-				78,
-				79,
-				80,
-				81,
-				82,
-				83,
-				84,
-				85,
-				86,
-				87,
-				90
+				77
 			]
 		},
 		{
@@ -295,21 +289,21 @@
 			[
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/User"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/User"
 				},
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/STM32F10x_FWLib/inc"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/STM32F10x_FWLib/inc"
 				},
 				{
 					"backtrace" : 11,
-					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/Hardware"
+					"path" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/Hardware"
 				}
 			],
 			"language" : "ASM",
 			"sourceIndexes" : 
 			[
-				92
+				79
 			]
 		}
 	],
@@ -328,7 +322,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "\"-Wl,-gc-sections,--print-memory-usage,-Map=C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/cmake-build-debug/CLionSTM32Demo.map\"",
+				"fragment" : "\"-Wl,-gc-sections,--print-memory-usage,-Map=C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/cmake-build-debug/CLionSTM32Demo.map\"",
 				"role" : "flags"
 			},
 			{
@@ -353,7 +347,7 @@
 			},
 			{
 				"backtrace" : 4,
-				"fragment" : "\"C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/STM32F103C8Tx_FLASH.ld\"",
+				"fragment" : "\"C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/STM32F103C8Tx_FLASH.ld\"",
 				"role" : "flags"
 			},
 			{
@@ -363,7 +357,17 @@
 			},
 			{
 				"backtrace" : 4,
-				"fragment" : "Hardware/Beep_Led.c",
+				"fragment" : "Hardware/Laser.c",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "Hardware/json.c",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "Hardware/json.h",
 				"role" : "flags"
 			},
 			{
@@ -411,18 +415,25 @@
 				2,
 				4,
 				6,
-				8,
-				10,
+				9,
 				12,
-				15,
-				17,
-				19,
-				22,
-				25,
-				27,
-				29,
-				31,
-				33,
+				14,
+				16,
+				18,
+				20,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				58,
+				59,
+				60,
+				61,
 				62,
 				63,
 				64,
@@ -436,20 +447,7 @@
 				72,
 				73,
 				74,
-				75,
-				76,
-				77,
-				78,
-				79,
-				80,
-				81,
-				82,
-				83,
-				84,
-				85,
-				86,
-				87,
-				90
+				77
 			]
 		},
 		{
@@ -460,20 +458,26 @@
 				3,
 				5,
 				7,
-				9,
+				8,
+				10,
 				11,
 				13,
-				14,
-				16,
-				18,
-				20,
+				15,
+				17,
+				19,
 				21,
+				22,
 				23,
 				24,
+				25,
 				26,
+				27,
 				28,
+				29,
 				30,
+				31,
 				32,
+				33,
 				34,
 				35,
 				36,
@@ -489,57 +493,22 @@
 				46,
 				47,
 				48,
-				49,
-				50,
-				51,
-				52,
-				53,
-				54,
-				55,
-				56,
-				57,
-				58,
-				59,
-				60,
-				61,
-				88,
-				89,
-				91
+				75,
+				76,
+				78
 			]
 		},
 		{
 			"name" : "",
 			"sourceIndexes" : 
 			[
-				92,
-				93
+				79,
+				80
 			]
 		}
 	],
 	"sources" : 
 	[
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Hardware/ADCconfig.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/ADCconfig.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Hardware/Beep_Led.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/Beep_Led.h",
-			"sourceGroupIndex" : 1
-		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
@@ -565,17 +534,6 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Hardware/Encoder.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/Encoder.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
 			"path" : "Hardware/Key.c",
 			"sourceGroupIndex" : 0
 		},
@@ -587,50 +545,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Hardware/MPU6050.c",
+			"path" : "Hardware/Laser.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "Hardware/MPU6050.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/MPU6050_Reg.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Hardware/MadgwickAHRS.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/MadgwickAHRS.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Hardware/Motor.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/Motor.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Hardware/MotorControl.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/MotorControl.h",
+			"path" : "Hardware/Laser.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -679,17 +599,6 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Hardware/TCR.c",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Hardware/TCR.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
 			"path" : "Hardware/Timer.c",
 			"sourceGroupIndex" : 0
 		},
@@ -707,6 +616,17 @@
 		{
 			"backtrace" : 1,
 			"path" : "Hardware/UART.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Hardware/json.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Hardware/json.h",
 			"sourceGroupIndex" : 1
 		},
 		{

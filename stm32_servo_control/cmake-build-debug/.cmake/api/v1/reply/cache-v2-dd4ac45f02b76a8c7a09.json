@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/cmake-build-debug"
+			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/cmake-build-debug"
 		},
 		{
 			"name" : "CLionSTM32Demo_IS_TOP_LEVEL",
@@ -35,7 +35,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control"
+			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -199,7 +199,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/cmake-build-debug"
+			"value" : "c:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -639,7 +639,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -699,7 +699,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/servo_control"
+			"value" : "C:/Users/Buer_vakabauta/Desktop/SoundLocating&Tracking/stm32_servo_control"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",

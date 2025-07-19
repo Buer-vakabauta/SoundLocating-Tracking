@@ -30,3 +30,4 @@
 .\objects\uart.o: .\Library\stm32f10x_wwdg.h
 .\objects\uart.o: .\Library\misc.h
 .\objects\uart.o: D:\Keil5\Keil5file\Keil5Core\ARM\ARMCC\Bin\..\include\string.h
+.\objects\uart.o: Hardware\json.h

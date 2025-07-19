@@ -56,10 +56,10 @@ RM = "D:\CLion 2024.2.2\bin\cmake\win\x64\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control"
+CMAKE_SOURCE_DIR = "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\cmake-build-debug"
+CMAKE_BINARY_DIR = "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\cmake-build-debug"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\cmake-build-debug\CMakeFiles" "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\cmake-build-debug\\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\cmake-build-debug\CMakeFiles" "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\cmake-build-debug\\CMakeFiles\progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\servo_control\cmake-build-debug\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Buer_vakabauta\Desktop\SoundLocating&Tracking\stm32_servo_control\cmake-build-debug\CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -127,54 +127,6 @@ CLionSTM32Demo.elf: cmake_check_build_system
 CLionSTM32Demo.elf/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/build
 .PHONY : CLionSTM32Demo.elf/fast
-
-Hardware/ADCconfig.obj: Hardware/ADCconfig.c.obj
-.PHONY : Hardware/ADCconfig.obj
-
-# target to build an object file
-Hardware/ADCconfig.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ADCconfig.c.obj
-.PHONY : Hardware/ADCconfig.c.obj
-
-Hardware/ADCconfig.i: Hardware/ADCconfig.c.i
-.PHONY : Hardware/ADCconfig.i
-
-# target to preprocess a source file
-Hardware/ADCconfig.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ADCconfig.c.i
-.PHONY : Hardware/ADCconfig.c.i
-
-Hardware/ADCconfig.s: Hardware/ADCconfig.c.s
-.PHONY : Hardware/ADCconfig.s
-
-# target to generate assembly for a file
-Hardware/ADCconfig.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ADCconfig.c.s
-.PHONY : Hardware/ADCconfig.c.s
-
-Hardware/Beep_Led.obj: Hardware/Beep_Led.c.obj
-.PHONY : Hardware/Beep_Led.obj
-
-# target to build an object file
-Hardware/Beep_Led.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Beep_Led.c.obj
-.PHONY : Hardware/Beep_Led.c.obj
-
-Hardware/Beep_Led.i: Hardware/Beep_Led.c.i
-.PHONY : Hardware/Beep_Led.i
-
-# target to preprocess a source file
-Hardware/Beep_Led.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Beep_Led.c.i
-.PHONY : Hardware/Beep_Led.c.i
-
-Hardware/Beep_Led.s: Hardware/Beep_Led.c.s
-.PHONY : Hardware/Beep_Led.s
-
-# target to generate assembly for a file
-Hardware/Beep_Led.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Beep_Led.c.s
-.PHONY : Hardware/Beep_Led.c.s
 
 Hardware/Delay.obj: Hardware/Delay.c.obj
 .PHONY : Hardware/Delay.obj
@@ -224,30 +176,6 @@ Hardware/ESP8266.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/ESP8266.c.s
 .PHONY : Hardware/ESP8266.c.s
 
-Hardware/Encoder.obj: Hardware/Encoder.c.obj
-.PHONY : Hardware/Encoder.obj
-
-# target to build an object file
-Hardware/Encoder.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Encoder.c.obj
-.PHONY : Hardware/Encoder.c.obj
-
-Hardware/Encoder.i: Hardware/Encoder.c.i
-.PHONY : Hardware/Encoder.i
-
-# target to preprocess a source file
-Hardware/Encoder.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Encoder.c.i
-.PHONY : Hardware/Encoder.c.i
-
-Hardware/Encoder.s: Hardware/Encoder.c.s
-.PHONY : Hardware/Encoder.s
-
-# target to generate assembly for a file
-Hardware/Encoder.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Encoder.c.s
-.PHONY : Hardware/Encoder.c.s
-
 Hardware/Key.obj: Hardware/Key.c.obj
 .PHONY : Hardware/Key.obj
 
@@ -272,101 +200,29 @@ Hardware/Key.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Key.c.s
 .PHONY : Hardware/Key.c.s
 
-Hardware/MPU6050.obj: Hardware/MPU6050.c.obj
-.PHONY : Hardware/MPU6050.obj
+Hardware/Laser.obj: Hardware/Laser.c.obj
+.PHONY : Hardware/Laser.obj
 
 # target to build an object file
-Hardware/MPU6050.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MPU6050.c.obj
-.PHONY : Hardware/MPU6050.c.obj
+Hardware/Laser.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Laser.c.obj
+.PHONY : Hardware/Laser.c.obj
 
-Hardware/MPU6050.i: Hardware/MPU6050.c.i
-.PHONY : Hardware/MPU6050.i
-
-# target to preprocess a source file
-Hardware/MPU6050.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MPU6050.c.i
-.PHONY : Hardware/MPU6050.c.i
-
-Hardware/MPU6050.s: Hardware/MPU6050.c.s
-.PHONY : Hardware/MPU6050.s
-
-# target to generate assembly for a file
-Hardware/MPU6050.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MPU6050.c.s
-.PHONY : Hardware/MPU6050.c.s
-
-Hardware/MadgwickAHRS.obj: Hardware/MadgwickAHRS.c.obj
-.PHONY : Hardware/MadgwickAHRS.obj
-
-# target to build an object file
-Hardware/MadgwickAHRS.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MadgwickAHRS.c.obj
-.PHONY : Hardware/MadgwickAHRS.c.obj
-
-Hardware/MadgwickAHRS.i: Hardware/MadgwickAHRS.c.i
-.PHONY : Hardware/MadgwickAHRS.i
+Hardware/Laser.i: Hardware/Laser.c.i
+.PHONY : Hardware/Laser.i
 
 # target to preprocess a source file
-Hardware/MadgwickAHRS.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MadgwickAHRS.c.i
-.PHONY : Hardware/MadgwickAHRS.c.i
+Hardware/Laser.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Laser.c.i
+.PHONY : Hardware/Laser.c.i
 
-Hardware/MadgwickAHRS.s: Hardware/MadgwickAHRS.c.s
-.PHONY : Hardware/MadgwickAHRS.s
-
-# target to generate assembly for a file
-Hardware/MadgwickAHRS.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MadgwickAHRS.c.s
-.PHONY : Hardware/MadgwickAHRS.c.s
-
-Hardware/Motor.obj: Hardware/Motor.c.obj
-.PHONY : Hardware/Motor.obj
-
-# target to build an object file
-Hardware/Motor.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Motor.c.obj
-.PHONY : Hardware/Motor.c.obj
-
-Hardware/Motor.i: Hardware/Motor.c.i
-.PHONY : Hardware/Motor.i
-
-# target to preprocess a source file
-Hardware/Motor.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Motor.c.i
-.PHONY : Hardware/Motor.c.i
-
-Hardware/Motor.s: Hardware/Motor.c.s
-.PHONY : Hardware/Motor.s
+Hardware/Laser.s: Hardware/Laser.c.s
+.PHONY : Hardware/Laser.s
 
 # target to generate assembly for a file
-Hardware/Motor.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Motor.c.s
-.PHONY : Hardware/Motor.c.s
-
-Hardware/MotorControl.obj: Hardware/MotorControl.c.obj
-.PHONY : Hardware/MotorControl.obj
-
-# target to build an object file
-Hardware/MotorControl.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MotorControl.c.obj
-.PHONY : Hardware/MotorControl.c.obj
-
-Hardware/MotorControl.i: Hardware/MotorControl.c.i
-.PHONY : Hardware/MotorControl.i
-
-# target to preprocess a source file
-Hardware/MotorControl.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MotorControl.c.i
-.PHONY : Hardware/MotorControl.c.i
-
-Hardware/MotorControl.s: Hardware/MotorControl.c.s
-.PHONY : Hardware/MotorControl.s
-
-# target to generate assembly for a file
-Hardware/MotorControl.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/MotorControl.c.s
-.PHONY : Hardware/MotorControl.c.s
+Hardware/Laser.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/Laser.c.s
+.PHONY : Hardware/Laser.c.s
 
 Hardware/OLED.obj: Hardware/OLED.c.obj
 .PHONY : Hardware/OLED.obj
@@ -440,30 +296,6 @@ Hardware/PWM.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/PWM.c.s
 .PHONY : Hardware/PWM.c.s
 
-Hardware/TCR.obj: Hardware/TCR.c.obj
-.PHONY : Hardware/TCR.obj
-
-# target to build an object file
-Hardware/TCR.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/TCR.c.obj
-.PHONY : Hardware/TCR.c.obj
-
-Hardware/TCR.i: Hardware/TCR.c.i
-.PHONY : Hardware/TCR.i
-
-# target to preprocess a source file
-Hardware/TCR.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/TCR.c.i
-.PHONY : Hardware/TCR.c.i
-
-Hardware/TCR.s: Hardware/TCR.c.s
-.PHONY : Hardware/TCR.s
-
-# target to generate assembly for a file
-Hardware/TCR.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/TCR.c.s
-.PHONY : Hardware/TCR.c.s
-
 Hardware/Timer.obj: Hardware/Timer.c.obj
 .PHONY : Hardware/Timer.obj
 
@@ -511,6 +343,30 @@ Hardware/UART.s: Hardware/UART.c.s
 Hardware/UART.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/UART.c.s
 .PHONY : Hardware/UART.c.s
+
+Hardware/json.obj: Hardware/json.c.obj
+.PHONY : Hardware/json.obj
+
+# target to build an object file
+Hardware/json.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/json.c.obj
+.PHONY : Hardware/json.c.obj
+
+Hardware/json.i: Hardware/json.c.i
+.PHONY : Hardware/json.i
+
+# target to preprocess a source file
+Hardware/json.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/json.c.i
+.PHONY : Hardware/json.c.i
+
+Hardware/json.s: Hardware/json.c.s
+.PHONY : Hardware/json.s
+
+# target to generate assembly for a file
+Hardware/json.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionSTM32Demo.elf.dir\build.make CMakeFiles/CLionSTM32Demo.elf.dir/Hardware/json.c.s
+.PHONY : Hardware/json.c.s
 
 STM32F10x_FWLib/src/core_cm3.obj: STM32F10x_FWLib/src/core_cm3.c.obj
 .PHONY : STM32F10x_FWLib/src/core_cm3.obj
@@ -1177,36 +1033,18 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... CLionSTM32Demo.elf
-	@echo ... Hardware/ADCconfig.obj
-	@echo ... Hardware/ADCconfig.i
-	@echo ... Hardware/ADCconfig.s
-	@echo ... Hardware/Beep_Led.obj
-	@echo ... Hardware/Beep_Led.i
-	@echo ... Hardware/Beep_Led.s
 	@echo ... Hardware/Delay.obj
 	@echo ... Hardware/Delay.i
 	@echo ... Hardware/Delay.s
 	@echo ... Hardware/ESP8266.obj
 	@echo ... Hardware/ESP8266.i
 	@echo ... Hardware/ESP8266.s
-	@echo ... Hardware/Encoder.obj
-	@echo ... Hardware/Encoder.i
-	@echo ... Hardware/Encoder.s
 	@echo ... Hardware/Key.obj
 	@echo ... Hardware/Key.i
 	@echo ... Hardware/Key.s
-	@echo ... Hardware/MPU6050.obj
-	@echo ... Hardware/MPU6050.i
-	@echo ... Hardware/MPU6050.s
-	@echo ... Hardware/MadgwickAHRS.obj
-	@echo ... Hardware/MadgwickAHRS.i
-	@echo ... Hardware/MadgwickAHRS.s
-	@echo ... Hardware/Motor.obj
-	@echo ... Hardware/Motor.i
-	@echo ... Hardware/Motor.s
-	@echo ... Hardware/MotorControl.obj
-	@echo ... Hardware/MotorControl.i
-	@echo ... Hardware/MotorControl.s
+	@echo ... Hardware/Laser.obj
+	@echo ... Hardware/Laser.i
+	@echo ... Hardware/Laser.s
 	@echo ... Hardware/OLED.obj
 	@echo ... Hardware/OLED.i
 	@echo ... Hardware/OLED.s
@@ -1216,15 +1054,15 @@ help:
 	@echo ... Hardware/PWM.obj
 	@echo ... Hardware/PWM.i
 	@echo ... Hardware/PWM.s
-	@echo ... Hardware/TCR.obj
-	@echo ... Hardware/TCR.i
-	@echo ... Hardware/TCR.s
 	@echo ... Hardware/Timer.obj
 	@echo ... Hardware/Timer.i
 	@echo ... Hardware/Timer.s
 	@echo ... Hardware/UART.obj
 	@echo ... Hardware/UART.i
 	@echo ... Hardware/UART.s
+	@echo ... Hardware/json.obj
+	@echo ... Hardware/json.i
+	@echo ... Hardware/json.s
 	@echo ... STM32F10x_FWLib/src/core_cm3.obj
 	@echo ... STM32F10x_FWLib/src/core_cm3.i
 	@echo ... STM32F10x_FWLib/src/core_cm3.s
