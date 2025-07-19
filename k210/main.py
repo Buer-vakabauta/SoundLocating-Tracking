@@ -59,16 +59,16 @@ audio_buffer = []
 
 # 引脚配置------------------------------------
 # 串口通信
-fm.register(1, fm.fpioa.UART1_TX)
-fm.register(0, fm.fpioa.UART1_RX)
+fm.register(1, fm.fpioa.UART1_TX)#10
+fm.register(0, fm.fpioa.UART1_RX)#8
 
 # 麦克风阵列引脚
-fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS
-fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK
-fm.register(44, fm.fpioa.I2S0_OUT_D0)    # MIC_D0
-fm.register(46, fm.fpioa.I2S0_OUT_D1)    # MIC_D1
-fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2
-fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3
+fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS#21
+fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK#22
+fm.register(44, fm.fpioa.I2S0_OUT_D0)    # MIC_D0#23
+fm.register(46, fm.fpioa.I2S0_OUT_D1)    # MIC_D1#24
+fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2#25
+fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3#26
 
 # 按键
 fm.register(board_info.BOOT_KEY, fm.fpioa.GPIOHS0, force=True)
@@ -342,7 +342,6 @@ def main_loop():
 
     while True:
         current_time = time.ticks_ms()
-
         # 检测触摸事件
         try:
             (status, x, y) = ts.read()
