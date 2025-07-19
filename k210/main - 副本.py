@@ -16,7 +16,7 @@ system_state = {
     'distance': 0.0,#距离
     'angle': 0.0,#角度
     'target_x': 0.0,#目标位置X
-    'target_y': 0.0,#目标位置y
+    'target_y': 0.0#目标位置y
 }
 
 # 麦克风阵列配置
@@ -70,6 +70,9 @@ fm.register(5, fm.fpioa.I2S0_OUT_D3)    # MIC_D3
 fm.register(6, fm.fpioa.I2S0_WS)        # MIC_WS
 fm.register(7, fm.fpioa.I2S0_SCLK)      # MIC_CK
 
+# LED指示灯
+fm.register(8, fm.fpioa.SPI1_SCLK)      # LED_CK
+fm.register(9, fm.fpioa.SPI1_D0)        # LED_DA
 
 # 触摸屏
 fm.register(10, fm.fpioa.SPI0_SCLK)     # 触摸屏时钟
@@ -109,9 +112,10 @@ try:
                           cycles=I2S.SCLK_CYCLES_32, align_mode=I2S.STANDARD_MODE)
     i2s_mic.set_sample_rate(mic_array_config['sample_rate'])
 except:
-    print('I2S Init Faild')
+    print("I2S初始化失败")
 
-
+# LED指示灯初始化
+spi_led = SPI(SPI.SPI1, mode=SPI.MODE_MASTER, baudrate=1000000, polarity=0, phase=0)
 
 # 函数定义------------------------------------
 
@@ -125,14 +129,39 @@ def boot_key_irq(key):
             system_state['locating'] = not system_state['locating']
             if system_state['locating']:
                 print("开始声源定位")
-
+                set_led_color(0, 255, 0)  # 绿色
             else:
                 print("停止声源定位")
-
+                set_led_color(255, 0, 0)  # 红色
                 system_state['laser_on'] = False
                 send_laser_control(False)
         last_press_time = current_time
 
+def touch_irq(pin):
+    """触摸屏中断处理"""
+    global touch_config
+    # 读取触摸坐标
+    touch_data = read_touch_position()
+    if touch_data:
+        touch_config['x_last'] = touch_data[0]
+        touch_config['y_last'] = touch_data[1]
+        handle_touch_event(touch_config['x_last'], touch_config['y_last'])
+
+def read_touch_position():
+    """读取触摸屏位置"""
+    global touch_config
+
+    try:
+        (status, x, y) = ts.read()
+
+        if status != touch_config['status_last']:
+            touch_config['status_last'] = status
+            if status == ts.STATUS_PRESS:
+                return (x, y)
+
+        return None
+    except:
+        return None
 
 def handle_touch_event(x, y):
     """处理触摸事件"""
@@ -159,7 +188,11 @@ def reset_system():
     system_state['distance'] = 0.0
     system_state['angle'] = 0.0
     send_laser_control(False)
+    set_led_color(0, 0, 255)  # 蓝色表示重置
 
+def set_led_color(r, g, b):
+    """设置用户灯"""
+    pass
 
 def read_microphone_array():
     """读取麦克风阵列数据"""
@@ -207,7 +240,7 @@ def calculate_sound_source_location(audio_channels):
 
 def calculate_time_delays(channels):
     """计算各通道间的时间差"""
-    # 互相关算法
+    # 简化的互相关算法
     time_delays = []
 
     for i in range(1, len(channels)):
@@ -219,13 +252,13 @@ def calculate_time_delays(channels):
 
 def cross_correlation_delay(sig1, sig2):
     """计算两个信号的互相关时间差"""
-    # 返回随机时间差(接口函数,需要完善)
+    # 简化实现，返回随机时间差用于演示
     # 实际需要实现完整的互相关算法
     return 0.001 * (hash(str(sig1[:10])) % 100 - 50)
 
 def tdoa_localization(time_delays):
     """基于时间差的定位算法"""
-    # TDOA定位算法
+    # 简化的TDOA定位算法
     # 实际需要解非线性方程组
 
     if not time_delays:
@@ -259,7 +292,7 @@ def send_uart_data(distance, angle, laser_on=False):
         uart1.write(json_str.encode())
 
     except Exception as e:
-        print('Uart:'+'str(e)')
+        print("串口发送失败: " + str(e))
 
 def send_laser_control(laser_on):
     """发送激光控制命令"""
@@ -274,7 +307,7 @@ def send_laser_control(laser_on):
         uart1.write(json_str.encode())
 
     except Exception as e:
-        print('Laser:'+str(e))
+        print("激光控制失败: " + str(e))
 
 def draw_interface():
     """绘制用户界面"""
@@ -336,6 +369,13 @@ def draw_interface():
     display_img.draw_circle(center_x, center_y, 2, color=(0, 255, 0), fill=True)
 
     # 状态指示
+    status_y = 200
+    if system_state['locating']:
+        display_img.draw_string(10, status_y, "Status: Locating...", color=(0, 255, 0), scale=1)
+    elif system_state['tracking']:
+        display_img.draw_string(10, status_y, "Status: Tracking...", color=(255, 255, 0), scale=1)
+    else:
+        display_img.draw_string(10, status_y, "Status: Standby", color=(255, 255, 255), scale=1)
 
     # 显示到屏幕
     lcd.display(display_img)
@@ -345,6 +385,7 @@ def main_loop():
     global system_state, last_location_time, touch_config
 
     print("声源定位系统启动")
+    set_led_color(0, 0, 255)  # 蓝色表示启动
 
     while True:
         current_time = time.ticks_ms()
@@ -412,5 +453,7 @@ if __name__ == "__main__":
         main_loop()
     except KeyboardInterrupt:
         print("程序停止")
+        set_led_color(255, 0, 0)  # 红色表示停止
     except Exception as e:
         print("程序错误: " + str(e))
+        set_led_color(255, 255, 0)  # 黄色表示错误
