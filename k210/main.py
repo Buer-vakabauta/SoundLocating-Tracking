@@ -63,18 +63,12 @@ fm.register(1, fm.fpioa.UART1_TX)
 fm.register(0, fm.fpioa.UART1_RX)
 
 # 麦克风阵列引脚
-fm.register(2, fm.fpioa.I2S0_OUT_D0)    # MIC_D0
-fm.register(3, fm.fpioa.I2S0_OUT_D1)    # MIC_D1
-fm.register(4, fm.fpioa.I2S0_OUT_D2)    # MIC_D2
-fm.register(5, fm.fpioa.I2S0_OUT_D3)    # MIC_D3
-fm.register(6, fm.fpioa.I2S0_WS)        # MIC_WS
-fm.register(7, fm.fpioa.I2S0_SCLK)      # MIC_CK
-
-
-# 触摸屏
-fm.register(10, fm.fpioa.SPI0_SCLK)     # 触摸屏时钟
-fm.register(11, fm.fpioa.SPI0_D0)       # 触摸屏数据
-fm.register(12, fm.fpioa.SPI0_D1)       # 触摸屏数据
+fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS
+fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK
+fm.register(44, fm.fpioa.I2S0_OUT_D0)    # MIC_D0
+fm.register(46, fm.fpioa.I2S0_OUT_D1)    # MIC_D1
+fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2
+fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3
 
 # 按键
 fm.register(board_info.BOOT_KEY, fm.fpioa.GPIOHS0, force=True)
