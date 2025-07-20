@@ -6,7 +6,9 @@ import time, sensor, image, lcd, gc, math
 from machine import UART, SPI
 import struct
 import json
+import math
 import touchscreen as ts
+import random
 
 # 全局变量------------------------------------
 flag=0
@@ -108,43 +110,138 @@ except:
     print('I2S Init Faild')
 
 
+#类定义--------------------------------------
+class MicDirectionProcessor:
+    """
+    MicDirectionProcessor 类用于处理麦克风阵列的方向数据，
+    包括：方向角估计、低通滤波、卡尔曼滤波平滑和距离估算。
 
+    参数:
+        kalman_q (float): 卡尔曼滤波器过程噪声协方差 Q
+        kalman_r (float): 卡尔曼滤波器观测噪声协方差 R
+        lb_level (int): 低通滤波器的缓存长度
+        use_kalman (bool): 是否启用卡尔曼滤波
+    """
+
+    def __init__(self, kalman_q=0.0, kalman_r=0.01, lb_level=3, use_kalman=True):
+        # 卡尔曼滤波器变量
+        self.kalman_prev_cov = 0.1       # 上一时刻协方差 P(k-1)
+        self.kalman_curr_cov = 0         # 当前时刻协方差 P(k)
+        self.kalman_state = 0            # 当前估计值 x(k)
+        self.kalman_gain = 0             # 卡尔曼增益 K(k)
+        self.kalman_Q = kalman_q         # 过程噪声 Q
+        self.kalman_R = kalman_r         # 观测噪声 R
+        self.use_kalman = use_kalman     # 是否启用卡尔曼滤波
+
+        # 低通滤波器变量
+        self.lp_buffer = [0] * lb_level  # 存储最近的角度值
+        self.lp_index = 0                # 当前写入下标
+        self.lp_max_index = 0            # 当前最大值下标
+        self.lp_min_index = 0            # 当前最小值下标
+        self.lp_level = lb_level         # 滤波窗口长度
+
+        self.last_angle = 0              # 上一帧计算出的方向角
+
+    def kalman_filter(self, value):
+        """
+        卡尔曼滤波器：用于平滑输入值
+
+        参数:
+            value (float): 当前观测值
+        返回:
+            float: 滤波后的估计值
+        """
+        self.kalman_curr_cov = self.kalman_prev_cov + self.kalman_Q
+        self.kalman_gain = self.kalman_curr_cov / (self.kalman_curr_cov + self.kalman_R)
+        output = self.kalman_state + self.kalman_gain * (value - self.kalman_state)
+        self.kalman_state = output
+        self.kalman_prev_cov = (1 - self.kalman_gain) * self.kalman_curr_cov
+        return output
+
+    def low_pass_filter(self, value):
+        """
+        简单低通滤波器：滤除最大最小值后取平均值
+
+        参数:
+            value (float): 当前输入角度
+        返回:
+            float | None: 平滑后的角度，如果未满窗口则返回 None
+        """
+        self.lp_buffer[self.lp_index] = value
+
+        if value > self.lp_buffer[self.lp_max_index]:
+            self.lp_max_index = self.lp_index
+        if value < self.lp_buffer[self.lp_min_index]:
+            self.lp_min_index = self.lp_index
+
+        if self.lp_index == self.lp_level:
+            # 丢弃最大和最小值再求平均
+            self.lp_buffer[self.lp_max_index] = 0
+            self.lp_buffer[self.lp_min_index] = 0
+            avg = sum(self.lp_buffer) / (self.lp_level - 1)
+
+            # 重置索引
+            self.lp_index = 0
+            self.lp_max_index = 0
+            self.lp_min_index = 0
+            return avg
+        else:
+            self.lp_index += 1
+            return None
+
+    def process_direction(self, imga,levels):
+        """
+        从麦克风阵列获取方向角并进行平滑处理，输出角度与估算距离。
+
+        参数:
+            imga: 麦克风声强图(mic.get_map获取)，
+            levels:每个方向的声源强度值（12 个方向）(mic.get_dir(imga)获取)
+        返回:
+            dict | None: {'angle': 平滑方向角, 'distance': 估算距离}，若无方向信息则返回 None
+        """
+        #imga = mic.get_map()         # 获取麦克风当前的声强图
+        #levels = mic.get_dir(imga)   # 获取每个方向的声源强度值（12 个方向）
+        if imga is None:
+            return None,None
+        angle_x = 0
+        angle_y = 0
+        for i in range(len(levels)):
+            if levels[i] >= 0:
+                angle_x += levels[i] * math.sin(i * math.pi / 6)   # 水平方向加权
+                angle_y += levels[i] * math.cos(i * math.pi / 6)   # 垂直方向加权
+
+        if angle_x == 0 and angle_y == 0:
+            return None,None  # 无声源方向
+
+        # 计算角度（处理象限）
+        if angle_y == 0:
+            angle = 90 if angle_x > 0 else 270
+        else:
+            angle_offset = 0
+            if angle_y < 0:
+                angle_offset = 180
+            if angle_x < 0 and angle_y > 0:
+                angle_offset = 360
+            angle = angle_offset + math.degrees(math.atan(angle_x / angle_y))
+
+        # 限定在前方角度范围：[-30, +30]
+        if 0 < angle < 45 or 315 < angle < 360:
+            if angle > 315:
+                angle -= 360
+            angle = self.last_angle * 0.1 + angle * 0.9  # 快速响应但带记忆
+            filtered = self.low_pass_filter(angle)
+            if filtered is not None:
+                filtered = max(min(filtered, 30), -30)  # 限制角度范围
+                if self.use_kalman:
+                    filtered = self.kalman_filter(filtered)
+                self.last_angle = filtered
+
+                # 简易距离估计（经验公式）
+                distance = 275 / math.cos(-filtered * math.pi / 180)
+                return round(filtered, 2),round(distance, 2)
+
+        return None,None
 # 函数定义------------------------------------
-
-def get_direction_and_distance():
-    """获取声源方向和距离信息"""
-    try:
-        # 获取距离映射信息
-        distance_map = mic.get_map()
-        return distance_map
-
-    except Exception as e:
-        print("获取方向距离数据时出错:",str(e))
-        return None
-
-def calculate_distance_estimate(distance_map):
-        """
-        基于距离映射估算距离
-        distance_map包含各个方向的强度信息，用于估算距离
-        """
-        if distance_map is None:
-            return None
-
-        try:
-            # 计算平均强度
-            total_intensity = sum(distance_map)
-            avg_intensity = total_intensity / len(distance_map)
-
-            # 根据强度估算距离
-            if avg_intensity > 0:
-                estimated_distance = 1000 / avg_intensity
-                return min(estimated_distance, 500)  # 限制最大距离为500cm
-            else:
-                return None
-
-        except Exception as e:
-            print("计算距离估算时出错:",str(e))
-            return None
 
 def boot_key_irq(key):
     """按键中断处理"""
@@ -322,16 +419,16 @@ def main_loop():
         if system_state['locating'] or system_state['tracking']:
             if current_time - last_location_time > localization_params['update_interval'] * 1000:
                 # 读取麦克风阵列数据
-                direction_map=get_direction_and_distance()
+                imga = mic.get_map()         # 获取麦克风当前的声强图
+                if imga:
+                    levels=[0]*12
+                    levels = mic.get_dir(imga)   # 获取每个方向的声源强度值（12 个方向）
 
-                if direction_map:
+                    angle,distance=processor.process_direction(imga,levels)
                     # 计算声源位置
-                    angle=mic.get_dir(direction_map)
-                    distance= calculate_distance_estimate(direction_map)
                     if distance is not None and angle is not None:
                         system_state['distance'] = distance
                         system_state['angle'] = angle
-
                         # 发送数据到STM32
                         send_uart_data(distance, angle, system_state['laser_on'])
 
@@ -355,6 +452,8 @@ def main_loop():
 
 # 中断初始化
 boot_key.irq(boot_key_irq, GPIO.IRQ_BOTH, GPIO.WAKEUP_NOT_SUPPORT, 7)
+processor = MicDirectionProcessor(kalman_q=0.01, kalman_r=0.1, lb_level=5, use_kalman=True)
+
 # 启动主程序
 if __name__ == "__main__":
     try:
