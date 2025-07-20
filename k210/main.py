@@ -9,6 +9,7 @@ import json
 import touchscreen as ts
 
 # 全局变量------------------------------------
+flag=0
 # 系统状态
 system_state = {
     'locating': False,#定位模式
@@ -264,15 +265,19 @@ def draw_interface():
     angle_text = "Angle: " + str(round(system_state['angle'], 1)) + " deg"
     display_img.draw_string(10, result_y, distance_text, color=(255, 255, 255), scale=1)
     display_img.draw_string(10, result_y + 20, angle_text, color=(255, 255, 255), scale=1)
-
+    global flag
     # 绘制定位示意图
     center_x, center_y = 160, 150
-    radius = 50
-
+    if flag>19:
+        flag=0
+    radius = 50+10*int(flag/5)
     # 绘制圆圈表示检测范围
-    for r in range(10, radius, 10):
+    for r in range(10+10*int(flag/5), radius, 10):
         display_img.draw_circle(center_x, center_y, r, color=(128, 128, 128))
-
+    if system_state['locating']:
+        flag+=2
+    else:
+        flag=0
     # 绘制声源位置
     if system_state['distance'] > 0:
         angle_rad = math.radians(system_state['angle'])
