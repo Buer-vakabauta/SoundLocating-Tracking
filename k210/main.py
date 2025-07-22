@@ -2,16 +2,15 @@ from board import board_info  # 获取开发板信息
 from fpioa_manager import fm
 from maix import GPIO,I2S
 from maix import mic_array as mic
-import time, sensor, image, lcd, gc, math
+import time,image, lcd, gc, math
 from machine import UART, SPI
 import struct
 import json
 import math
 import touchscreen as ts
-import random
 
 # 全局变量------------------------------------
-flag=0
+
 # 系统状态
 system_state = {
     'locating': False,#定位模式
@@ -23,20 +22,7 @@ system_state = {
     'target_y': 0.0,#目标位置y
 }
 
-# 麦克风阵列配置
-mic_array_config = {
-    'sample_rate': 16000,#采样率
-    'channels': 6,#通道数
-    'buffer_size': 1024,#采样缓冲区大小
-    'positions': [  # 麦克风相对位置 (x, y) cm
-        (0, 0),     # M0
-        (2, 0),     # M1
-        (4, 0),     # M2
-        (6, 0),     # M3
-        (8, 0),     # M4
-        (10, 0)     # M5
-    ]
-}
+
 
 # 触摸屏参数
 touch_config = {
@@ -55,17 +41,13 @@ localization_params = {
     'angle_range': 180,    # 角度范围 度
     'update_interval': 0.1 # 更新间隔 s
 }
-
+flag=0
 last_press_time = 0
 last_location_time = 0
 audio_buffer = []
 #------------------------------------------
 
 # 引脚配置------------------------------------
-# 串口通信
-fm.register(1, fm.fpioa.UART1_TX)#10
-fm.register(0, fm.fpioa.UART1_RX)#8
-
 # 麦克风阵列引脚
 #fm.register(43, fm.fpioa.I2S0_WS)        # MIC_WS#21
 #fm.register(11, fm.fpioa.I2S0_SCLK)      # MIC_CK#22
@@ -74,10 +56,12 @@ fm.register(0, fm.fpioa.UART1_RX)#8
 #fm.register(45, fm.fpioa.I2S0_OUT_D2)    # MIC_D2#25
 #fm.register(47, fm.fpioa.I2S0_OUT_D3)    # MIC_D3#26
 mic.init(i2s_d0=44, i2s_d1=46, i2s_d2=45, i2s_d3=47, i2s_ws=43, i2s_sclk=11, sk9822_dat=39,  sk9822_clk=40)
+# 串口通信
+fm.register(1, fm.fpioa.UART1_TX)#10
+fm.register(0, fm.fpioa.UART1_RX)#8
 # 按键
 fm.register(board_info.BOOT_KEY, fm.fpioa.GPIOHS0, force=True)
 #------------------------------------------
-
 # 初始化-------------------------------------
 # 构造UART对象
 uart1 = UART(UART.UART1, 115200)
@@ -87,28 +71,11 @@ lcd.init()
 ts.init()
 lcd.clear()
 
-# 摄像头（用于调试显示）
-sensor.reset(dual_buff=True)
-sensor.set_pixformat(sensor.RGB565)
-sensor.set_framesize(sensor.QVGA)
-sensor.set_windowing((224, 224))
-sensor.skip_frames(time=2000)
-
 # 按键中断初始化
 boot_key = GPIO(GPIO.GPIOHS0, GPIO.IN, GPIO.PULL_UP)
 
 # 显示图像对象
 display_img = image.Image()
-
-# I2S麦克风阵列初始化
-try:
-    i2s_mic = I2S(I2S.DEVICE_0)
-    i2s_mic.channel_config(I2S.CHANNEL_0, I2S.RECEIVER, resolution=I2S.RESOLUTION_16_BIT,
-                          cycles=I2S.SCLK_CYCLES_32, align_mode=I2S.STANDARD_MODE)
-    i2s_mic.set_sample_rate(mic_array_config['sample_rate'])
-except:
-    print('I2S Init Faild')
-
 
 #类定义--------------------------------------
 class MicDirectionProcessor:
@@ -401,7 +368,6 @@ def main_loop():
         # 检测触摸事件
         try:
             (status, x, y) = ts.read()
-
             if status != touch_config['status_last']:
                 touch_config['status_last'] = status
                 if status == ts.STATUS_PRESS:
@@ -414,16 +380,14 @@ def main_loop():
 
         # 绘制界面
         draw_interface()
-
         # 如果启用定位或跟踪
         if system_state['locating'] or system_state['tracking']:
-            if current_time - last_location_time > localization_params['update_interval'] * 1000:
+#            if current_time - last_location_time > localization_params['update_interval'] * 1000:
+            if True:
                 # 读取麦克风阵列数据
                 imga = mic.get_map()         # 获取麦克风当前的声强图
                 if imga:
-                    levels=[0]*12
                     levels = mic.get_dir(imga)   # 获取每个方向的声源强度值（12 个方向）
-
                     angle,distance=processor.process_direction(imga,levels)
                     # 计算声源位置
                     if distance is not None and angle is not None:
@@ -452,7 +416,7 @@ def main_loop():
 
 # 中断初始化
 boot_key.irq(boot_key_irq, GPIO.IRQ_BOTH, GPIO.WAKEUP_NOT_SUPPORT, 7)
-processor = MicDirectionProcessor(kalman_q=0.01, kalman_r=0.1, lb_level=5, use_kalman=True)
+processor = MicDirectionProcessor(kalman_q=0.01, kalman_r=0.1, lb_level=5, use_kalman=False)
 
 # 启动主程序
 if __name__ == "__main__":
