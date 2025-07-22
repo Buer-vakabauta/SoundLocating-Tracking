@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "Laser.h"
+#include "PWM.h"
 void parse_json_manual(char *json) {
     if (strstr(json, "\"angle\"")) {
         char *p = strstr(json, "\"angle\"");
         int angle = atoi(strchr(p, ':') + 1);
-        // 控制舵机接口
+		
+        //舵机控制接口实现
     }
 
     if (strstr(json, "\"laser\"")) {

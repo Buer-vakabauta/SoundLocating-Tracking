@@ -1,13 +1,14 @@
 ;******************** (C) COPYRIGHT 2011 STMicroelectronics ********************
 ;* File Name          : startup_stm32f10x_md.s
 ;* Author             : MCD Application Team
-;* Version            : V3.5.0
+;* Version            : V3.5.0 (Modified for OTA support)
 ;* Date               : 11-March-2011
 ;* Description        : STM32F10x Medium Density Devices vector table for MDK-ARM 
-;*                      toolchain.  
+;*                      toolchain. Modified to support OTA bootloader.
 ;*                      This module performs:
 ;*                      - Set the initial SP
 ;*                      - Set the initial PC == Reset_Handler
+;*                      - Relocate vector table for OTA APP
 ;*                      - Set the vector table entries with the exceptions ISR address
 ;*                      - Configure the clock system
 ;*                      - Branches to __main in the C library (which eventually
@@ -16,13 +17,12 @@
 ;*                      priority is Privileged, and the Stack is set to Main.
 ;* <<< Use Configuration Wizard in Context Menu >>>   
 ;*******************************************************************************
-; THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-; WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
-; AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
-; INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
-; CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
-; INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-;*******************************************************************************
+
+; OTA Configuration - 根据你的bootloader配置修改这个地址
+; <h> OTA Configuration
+;   <o> APP Start Address <0x08000000-0x0807FFFF:0x800>
+; </h>
+APP_START_ADDRESS EQU 0x08004000    ; APP在Flash中的起始地址
 
 ; Amount of memory (in bytes) allocated for Stack
 ; Tailor this value to your application needs
@@ -125,11 +125,30 @@ __Vectors_Size  EQU  __Vectors_End - __Vectors
 
                 AREA    |.text|, CODE, READONLY
 
-; Reset handler
+; Reset handler - Modified for OTA support
 Reset_Handler    PROC
                  EXPORT  Reset_Handler             [WEAK]
      IMPORT  __main
      IMPORT  SystemInit
+     
+                ; ==== OTA向量表重定位 ====
+                ; 禁用所有中断
+                CPSID   I
+                
+                ; 重定位中断向量表到APP起始地址
+                LDR     R0, =APP_START_ADDRESS     ; 加载APP起始地址
+                LDR     R1, =0xE000ED08            ; SCB->VTOR寄存器地址
+                STR     R0, [R1]                   ; 设置向量表基地址
+                
+                ; 内存屏障确保重定位立即生效
+                DSB                                ; 数据同步屏障
+                ISB                                ; 指令同步屏障
+                
+                ; 重新启用中断
+                CPSIE   I
+                ; ==== 向量表重定位完成 ====
+                
+                ; 继续原有的初始化流程
                  LDR     R0, =SystemInit
                  BLX     R0
                  LDR     R0, =__main

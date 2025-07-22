@@ -5,6 +5,7 @@
 #include <Timer.h>
 #include "PWM.h"
 #include "Laser.h"
+#define APP_VECTOR_ADDR 0x08004000
 //全局变量
 uint8_t flag=0;
 float v_angle=190;
@@ -20,10 +21,10 @@ void init()
     Laser_Init();
     Timer_Init_TIM1();
     PWM_Init(19999, 71);
-    UART_Init(9600);
+    UART_Init(115200);
 }
 int main()
-{
+{	SCB->VTOR = APP_VECTOR_ADDR;
     init();
 	Servo_setAngle(190,70);
 	main_loop();
