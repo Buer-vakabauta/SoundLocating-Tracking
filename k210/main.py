@@ -380,44 +380,22 @@ def reset_system():
 def send_uart_data(distance, angle, laser_on=False):
     """发送数据到STM32"""
     global uart1
+    laser=0
     try:
         if uart1 is None:
             log_error("UART对象未初始化")
             return
-
-        data = {
-            'distance': round(distance, 2),
-            'angle': round(angle, 2),
-            'laser': laser_on,
-            'timestamp': time.ticks_ms()
-        }
-
-        json_str = json.dumps(data) + '\n'
+        if laser_on:
+            laser=1
+        else:
+            laser=0
+        json_str = '('+str(angle)+','+str(laser)+')' + '\n'
         uart1.write(json_str.encode())
 
     except Exception as e:
         log_error("UART数据发送失败", e)
-
-def send_laser_control(laser_on):
-    """发送激光控制命令"""
-    global uart1
-    try:
-        if uart1 is None:
-            log_error("UART对象未初始化")
-            return
-
-        cmd = {
-            'cmd': 'laser',
-            'state': laser_on,
-            'timestamp': time.ticks_ms()
-        }
-
-        json_str = json.dumps(cmd) + '\n'
-        uart1.write(json_str.encode())
-
-    except Exception as e:
-        log_error("激光控制命令发送失败", e)
-
+def send_laser_control(state):
+    send_uart_data(0,-180,state)
 def draw_interface():
     """绘制用户界面"""
     global system_state, display_img, error_state
@@ -557,13 +535,10 @@ def main_loop():
                         if distance is not None and angle is not None:
                             system_state['distance'] = distance
                             system_state['angle'] = angle
-                            # 发送数据到STM32
-                            send_uart_data(distance, angle, system_state['laser_on'])
-
-                            # 如果启用跟踪，自动开启激光
+                            # 如果启用跟踪，自动开启激光,并发送串口
                             if system_state['tracking']:
                                 system_state['laser_on'] = True
-                                send_laser_control(True)
+                                send_uart_data(distance, angle, system_state['laser_on'])
                             print("距离: " + str(round(distance, 2)) + "cm, 角度: " + str(round(angle, 1)) + "°")
                     last_location_time = current_time
                 except Exception as e:

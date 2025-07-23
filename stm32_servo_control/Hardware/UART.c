@@ -6,7 +6,7 @@
 #include "string.h"
 #include "json.h"
 #define BUFFER_SIZE 256
-
+#include "esp8266.h"
 char uart_buffer[BUFFER_SIZE];
 uint8_t buffer_index = -1;
 
@@ -102,10 +102,16 @@ void USART1_IRQHandler(void) {
         // 检查是否为终止符（例如换行符）
         if (received_char == '\n' || received_char == '\r') {
             uart_buffer[buffer_index] = '\0'; // 字符串结束符
-            buffer_index = 0;
-            if(uart_buffer[0]=='{'){
+			if (strstr(uart_buffer, "cmd:restart") != NULL) {
+			UART_SendString("restart...");
+			NVIC_SystemReset();
+			}
+			if(uart_buffer[0]=='('){
+				
                 parse_json_manual(uart_buffer);
             }
+            buffer_index = 0;
+			UART_clearBuffer();
         } else if (buffer_index < BUFFER_SIZE - 1) {
             uart_buffer[buffer_index++] = received_char; // 存入缓冲区
         }

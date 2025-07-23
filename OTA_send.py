@@ -134,6 +134,7 @@ def send_bin_file(serial_port, baud_rate, bin_path, force_trigger=False):
         ser.flushInput()
         ser.flushOutput()
         ser.write("cmd:restart\n".encode())#发送重启命令
+        ser.write("cmd:restart\n".encode())#发送重启命令
         if force_trigger:
             # 强制发送魔术值
             if not send_magic_trigger(ser):
@@ -229,14 +230,16 @@ def main():
     
     parser.add_argument("--port", 
                        help="串口端口, 例如: COM5 或 /dev/ttyUSB0", 
-                       required=True)
+                       default="COM12",
+                       type=str)
     parser.add_argument("--baud", 
                        help="波特率 (默认: 9600)", 
                        default=115200, 
                        type=int)
     parser.add_argument("--bin", 
-                       help="固件.bin文件路径", 
-                       required=True)
+                       help="固件.bin文件路径",
+                       default=".\\stm32_servo_control\\bin_file\\projet.bin", 
+                       type=str)
     parser.add_argument("--force", 
                        help="强制发送魔术值触发OTA", 
                        action="store_true")

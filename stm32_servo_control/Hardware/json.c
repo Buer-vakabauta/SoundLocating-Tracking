@@ -7,19 +7,18 @@
 #include <stdbool.h>
 #include "Laser.h"
 #include "PWM.h"
+#include "OLED.h"
+#include "UART.H"
 void parse_json_manual(char *json) {
-    if (strstr(json, "\"angle\"")) {
-        char *p = strstr(json, "\"angle\"");
-        int angle = atoi(strchr(p, ':') + 1);
-		
+
+	    float angle=0;
+		uint8_t laser_on=0;
+		sscanf(uart_buffer,"(%f,%d)",&angle,&laser_on);
+		if(angle>=-60&&angle<=60){
+		Servo_setAngle(70-angle,70-angle);
+		}
         //舵机控制接口实现
-    }
-
-    if (strstr(json, "\"laser\"")) {
-        char *p = strstr(json, "\"laser\"");
-        bool laser_on = strstr(p, "true") != NULL;
-        if(laser_on){Laser_set(1);}
+        if(laser_on==1){Laser_set(1);}
         else {Laser_set(0);}
-    }
-
+    
 }

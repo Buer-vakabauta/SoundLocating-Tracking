@@ -5,6 +5,7 @@
 #include <Timer.h>
 #include "PWM.h"
 #include "Laser.h"
+#include "OLED.h"
 #define APP_VECTOR_ADDR 0x08004000
 //全局变量
 uint8_t flag=0;
@@ -17,7 +18,8 @@ void init();
 
 //初始化
 void init()
-{
+{	
+	OLED_Init();
     Laser_Init();
     Timer_Init_TIM1();
     PWM_Init(19999, 71);
@@ -26,7 +28,8 @@ void init()
 int main()
 {	SCB->VTOR = APP_VECTOR_ADDR;
     init();
-	Servo_setAngle(190,70);
+	Laser_set(0);
+	Servo_setAngle(70,70);//70 190
 	main_loop();
 }
 
@@ -35,8 +38,15 @@ void main_loop(void)
 {
 		
     while (1){
-
-
+		
+		OLED_ShowString(1,1,"Tracking      ");
+		Delay_ms(500);
+		OLED_ShowString(1,1,"Tracking.");
+		Delay_ms(500);
+		OLED_ShowString(1,1,"Tracking..");
+		Delay_ms(500);
+		OLED_ShowString(1,1,"Tracking...");
+		Delay_ms(500);
     }
 }
 
